@@ -1,5 +1,5 @@
 /* See LICENSE file for copyright and license details. */
-
+#include <X11/XF86keysym.h> 
 /* appearance */
 static const unsigned int borderpx  = 1;        /* border pixel of windows */
 static const unsigned int gappx     = 10;        /* gaps between windows */
@@ -73,6 +73,11 @@ static const char *termcmd[]  = { "st", NULL };
 
 static const Key keys[] = {
 	/* modifier                     key        function        argument */
+    { 0, XF86XK_AudioRaiseVolume, spawn, SHCMD("pamixer --increase 5") },
+    { 0, XF86XK_AudioLowerVolume, spawn, SHCMD("pamixer --decrease 5") },
+    { 0, XF86XK_AudioMute,        spawn, SHCMD("pamixer --toggle-mute") },
+    { 0, XF86XK_MonBrightnessUp,   spawn, SHCMD("brightnessctl set +10%") },
+    { 0, XF86XK_MonBrightnessDown, spawn, SHCMD("brightnessctl set 10%-") },
 	{ MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
 	{ MODKEY|ShiftMask,             XK_Return, spawn,          {.v = termcmd } },
 	{ MODKEY,                       XK_b,      togglebar,      {0} },

@@ -11,45 +11,36 @@
 	ram_free(const char *unused)
 	{
 		uintmax_t free;
-		FILE *fp;
 
-		if (!(fp = fopen("/proc/meminfo", "r")))
+		if (pscanf("/proc/meminfo",
+		           "MemTotal: %ju kB\n"
+		           "MemFree: %ju kB\n"
+		           "MemAvailable: %ju kB\n",
+		           &free, &free, &free) != 3)
 			return NULL;
 
-		if (lscanf(fp, "MemFree:", "%ju kB", &free) != 1) {
-			fclose(fp);
-			return NULL;
-		}
-
-		fclose(fp);
 		return fmt_human(free * 1024, 1024);
 	}
 
 	const char *
 	ram_perc(const char *unused)
 	{
-		uintmax_t total, free, buffers, cached, shmem, sreclaimable;
+		uintmax_t total, free, buffers, cached;
 		int percent;
-		FILE *fp;
 
-		if (!(fp = fopen("/proc/meminfo", "r")))
+		if (pscanf("/proc/meminfo",
+		           "MemTotal: %ju kB\n"
+		           "MemFree: %ju kB\n"
+		           "MemAvailable: %ju kB\n"
+		           "Buffers: %ju kB\n"
+		           "Cached: %ju kB\n",
+		           &total, &free, &buffers, &buffers, &cached) != 5)
 			return NULL;
-
-		if (lscanf(fp, "MemTotal:", "%ju kB", &total)  != 1 ||
-		    lscanf(fp, "MemFree:", "%ju kB", &free)    != 1 ||
-		    lscanf(fp, "Buffers:", "%ju kB", &buffers) != 1 ||
-		    lscanf(fp, "Cached:", "%ju kB", &cached)   != 1 ||
-		    lscanf(fp, "Shmem:", "%ju kB", &shmem)     != 1 ||
-		    lscanf(fp, "SReclaimable:", "%ju kB", &sreclaimable) != 1) {
-			fclose(fp);
-			return NULL;
-		}
-		fclose(fp);
 
 		if (total == 0)
 			return NULL;
 
-		percent = 100 * (total - free - buffers - cached - sreclaimable + shmem) / total;
+		percent = 100 * ((total - free) - (buffers + cached)) / total;
 		return bprintf("%d", percent);
 	}
 
@@ -68,24 +59,18 @@
 	const char *
 	ram_used(const char *unused)
 	{
-		uintmax_t total, free, buffers, cached, used, shmem, sreclaimable;
-		FILE *fp;
+		uintmax_t total, free, buffers, cached, used;
 
-		if (!(fp = fopen("/proc/meminfo", "r")))
+		if (pscanf("/proc/meminfo",
+		           "MemTotal: %ju kB\n"
+		           "MemFree: %ju kB\n"
+		           "MemAvailable: %ju kB\n"
+		           "Buffers: %ju kB\n"
+		           "Cached: %ju kB\n",
+		           &total, &free, &buffers, &buffers, &cached) != 5)
 			return NULL;
 
-		if (lscanf(fp, "MemTotal:", "%ju kB", &total)  != 1 ||
-		    lscanf(fp, "MemFree:", "%ju kB", &free)    != 1 ||
-		    lscanf(fp, "Buffers:", "%ju kB", &buffers) != 1 ||
-		    lscanf(fp, "Cached:", "%ju kB", &cached)   != 1 ||
-		    lscanf(fp, "Shmem:", "%ju kB", &shmem)     != 1 ||
-		    lscanf(fp, "SReclaimable:", "%ju kB", &sreclaimable) != 1) {
-			fclose(fp);
-			return NULL;
-		}
-		fclose(fp);
-
-		used = total - free - buffers - cached - sreclaimable + shmem;
+		used = (total - free - buffers - cached);
 		return fmt_human(used * 1024, 1024);
 	}
 #elif defined(__OpenBSD__)
