@@ -78,6 +78,8 @@ static const Key keys[] = {
     { 0, XF86XK_AudioMute,        spawn, SHCMD("pamixer --toggle-mute") },
     { 0, XF86XK_MonBrightnessUp,   spawn, SHCMD("brightnessctl set +10%") },
     { 0, XF86XK_MonBrightnessDown, spawn, SHCMD("brightnessctl set 10%-") },
+    { 0,XK_Print,                 spawn, SHCMD("screenshot.sh") },
+    { MODKEY|ShiftMask,             XK_t,      spawn,          SHCMD("toggle_tray.sh")},
 	{ MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
 	{ MODKEY|ShiftMask,             XK_Return, spawn,          {.v = termcmd } },
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
