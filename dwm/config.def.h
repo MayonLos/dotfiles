@@ -12,13 +12,16 @@ static const int showsystray        = 1;        /* 0 means no systray */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
 static const Bool viewontag         = True;     /* Switch view on tag switch */
-static const char *fonts[]          = { "monospace:size=10" };
-static const char dmenufont[]       = "monospace:size=10";
-static const char col_gray1[]       = "#222222";
-static const char col_gray2[]       = "#444444";
-static const char col_gray3[]       = "#bbbbbb";
-static const char col_gray4[]       = "#eeeeee";
-static const char col_cyan[]        = "#005577";
+static const char *fonts[]          = {
+    "Noto Sans CJK SC:style=Regular:size=12:antialias=true:autohint=true",
+    "JetBrainsMono Nerd Font:style=Bold:size=12"
+};
+static const char dmenufont[]       = "Noto Sans CJK SC:style=Regular:size=12:antialias=true:autohint=true";
+static const char col_gray1[]       = "#1e2127";
+static const char col_gray2[]       = "#282c34";
+static const char col_gray3[]       = "#abb2bf";
+static const char col_gray4[]       = "#d7dae0";
+static const char col_cyan[]        = "#5c6370";
 static const char *colors[][3]      = {
 	/*               fg         bg         border   */
 	[SchemeNorm] = { col_gray3, col_gray1, col_gray2 },
@@ -53,7 +56,7 @@ static const Layout layouts[] = {
 };
 
 /* key definitions */
-#define MODKEY Mod1Mask
+#define MODKEY Mod4Mask
 #define TAGKEYS(KEY,TAG) \
 	{ MODKEY,                       KEY,      view,           {.ui = 1 << TAG} }, \
 	{ MODKEY|ControlMask,           KEY,      toggleview,     {.ui = 1 << TAG} }, \
@@ -70,6 +73,12 @@ static const char *termcmd[]  = { "st", NULL };
 
 static const Key keys[] = {
 	/* modifier                     key        function        argument */
+    { 0, XF86XK_AudioRaiseVolume, spawn, SHCMD("pamixer --increase 5") },
+    { 0, XF86XK_AudioLowerVolume, spawn, SHCMD("pamixer --decrease 5") },
+    { 0, XF86XK_AudioMute,        spawn, SHCMD("pamixer --toggle-mute") },
+    { 0, XF86XK_MonBrightnessUp,   spawn, SHCMD("brightnessctl set +10%") },
+    { 0, XF86XK_MonBrightnessDown, spawn, SHCMD("brightnessctl set 10%-") },
+    { 0,XK_Print,                 spawn, SHCMD("screenshot.sh") },
 	{ MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
 	{ MODKEY|ShiftMask,             XK_Return, spawn,          {.v = termcmd } },
 	{ MODKEY,                       XK_b,      togglebar,      {0} },

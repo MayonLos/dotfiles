@@ -66,10 +66,10 @@ static const char unknown_str[] = "n/a";
  */
 static const struct arg args[] = {
     /* function format          argument */
-    {wifi_perc, " %s ", "wlp0s20f3"},
-    {ipv4, "%s │ ", "wlp0s20f3"},
+    {wifi_perc, "%s ", "wlp0s20f3"},
+    {ipv4, " %s │ ", "wlp0s20f3"},
     {pamixer_status, "%s │", NULL},
-    {cpu_perc, " 󰘚 %s%% ", NULL},
+    {cpu_perc, " 󰘚 %s%%   ", NULL},
     {ram_perc, " 󰍛 %s%% │", NULL},
     {temp, " 󰔏 %s°C │", "/sys/class/hwmon/hwmon10/temp1_input"},
     {battery_state, " %s ", "BAT1"},
