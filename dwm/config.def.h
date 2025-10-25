@@ -96,6 +96,7 @@ static const Key keys[] = {
     { 0, XF86XK_MonBrightnessUp,   spawn, SHCMD("brightnessctl set +10%") },
     { 0, XF86XK_MonBrightnessDown, spawn, SHCMD("brightnessctl set 10%-") },
     { 0,XK_Print,                 spawn, SHCMD("screenshot.sh") },
+    { MODKEY,XK_v,                 spawn, SHCMD("cliphist-dmenu.sh") },
 	{ MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
 	{ MODKEY|ShiftMask,             XK_Return, spawn,          {.v = termcmd } },
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
