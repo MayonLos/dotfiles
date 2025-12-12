@@ -87,9 +87,18 @@ static const Layout layouts[] = {
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
 static const char *termcmd[]  = { "st", NULL };
+static const char *touchpad_toggle[] = {
+    "sh", "-c",
+    "xinput list-props 'ELAN06FA:00 04F3:327E Touchpad' | "
+    "grep -q 'Device Enabled.*1' && "
+    "xinput disable 'ELAN06FA:00 04F3:327E Touchpad' || "
+    "xinput enable 'ELAN06FA:00 04F3:327E Touchpad'",
+    NULL
+};
 
 static const Key keys[] = {
 	/* modifier                     key        function        argument */
+    { 0, XF86XK_TouchpadOn, spawn, {.v = touchpad_toggle } },
     { 0, XF86XK_AudioRaiseVolume, spawn, SHCMD("pamixer --increase 5") },
     { 0, XF86XK_AudioLowerVolume, spawn, SHCMD("pamixer --decrease 5") },
     { 0, XF86XK_AudioMute,        spawn, SHCMD("pamixer --toggle-mute") },
