@@ -2166,9 +2166,28 @@ seturgent(Client *c, int urg)
 void
 show(const Arg *arg)
 {
-	if (selmon->hidsel)
-		selmon->hidsel = 0;
-	showwin(selmon->sel);
+    Client *c;
+
+    /* “固定”临时显示的隐藏窗口：不再自动 hide 回去 */
+    selmon->hidsel = 0;
+
+    /* 1) 如果当前选中的就是隐藏窗口，直接显示并聚焦 */
+    if (selmon->sel && HIDDEN(selmon->sel)) {
+        showwin(selmon->sel);
+        focus(selmon->sel);
+        restack(selmon);
+        return;
+    }
+
+    /* 2) 否则：把当前视图里“最近的一个隐藏窗口”翻出来 */
+    for (c = selmon->stack; c; c = c->snext) {
+        if (ISVISIBLE(c) && HIDDEN(c)) {
+            showwin(c);
+            focus(c);
+            restack(selmon);
+            return;
+        }
+    }
 }
 
 void
