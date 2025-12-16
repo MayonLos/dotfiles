@@ -1,0 +1,21 @@
+# ─── 音量调节（推荐用 pamixer） ────────
+XF86AudioRaiseVolume
+    pamixer --increase 5
+
+XF86AudioLowerVolume
+    pamixer --decrease 5
+
+XF86AudioMute
+    pamixer --toggle-mute
+
+# ─── 亮度调节 ───────────────────────────
+XF86MonBrightnessUp
+    brightnessctl set +10%
+
+XF86MonBrightnessDown
+    brightnessctl set 10%-
+
+# Win + V 打开剪贴板历史（clipmenu）
+super + v
+    clipmenu
+
